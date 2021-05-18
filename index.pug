@@ -1,0 +1,102 @@
+extends layout
+
+block content
+
+  script(type="text/template" data-template="template").
+    <div style="overflow-x: hidden">
+    <div id="categories">
+      <label class="category" value="Categorical">&nbsp;Categorical Variables</label>
+
+      <% for (var field in categorical ) { %>
+        <% var checked = field == 0 ? "checked" : ""%>
+        <input type="radio" name="categorical" value="<%=categorical[field]%>" style="height:14px; width:14px;" <%=checked%>/>
+        <div style="display: inline-block; opacity:0.8; left:70px; width: 88%; font-size:16px; vertical-align:top; margin-bottom:10px;">
+          <% fieldLabel = categorical[field].trim().length == 0 ? '[No Value]' : categorical[field] %>
+          <label style="display: block; left:35px; right:30px; position:absolute; text-overflow: ellipsis; overflow:hidden; white-space: nowrap;"><%=fieldLabel%></label>
+          <span style="width:16px; height:16px; float: right;">
+            <% var fieldValue = categorical[field].replace(/[\s|0-9|\(|\)]/g, '-') %>
+            <% var fieldID = 'field-' + fieldValue %>
+            <% var buttonID = fieldID + '-button' %>
+            <% var click = '$(this).Toggle("#' + fieldID + '","#' + buttonID + '")' %>
+            <input type="button" id="<%=buttonID%>" onclick="<%=click%>" style="width:16px; height:16px; border:none; background: url('assets/images/up-chevron-button.svg'); background-size: cover;  background-repeat: no-repeat;"/>
+          </span>
+          <div id="<%=fieldID%>" style="display:none; margin-top:5px; position:relative; width:100%">
+            <% var sortedFilters = filters.get(categorical[field]).sort() %>
+            <% for (var filter in sortedFilters ) { %>
+              <div style="display: inline-block; position:relative; width:100%; vertical-align:top; margin-top:5px;">
+                <% var filterID = categorical[field] + '-button' %>
+                <input type="checkbox" name="<%=filterID%>" value="<%=sortedFilters[filter]%>" style="height:12px; width:12px;" checked></input>
+                <div style="display: inline-block; position:absolute; left:20px; right:0px; vertical-align:top; font-size:14px; opacity:0.7">
+                  <% var filterLabel = sortedFilters[filter].trim().length == 0 ? '[No Value]' : sortedFilters[filter] %>
+                  <% var filterLabelID = 'value-' + (fieldValue + "-" + filterLabel).replace(/[\s|\(|\)|\[|\]|\/]|\&|\./g, '-') %>
+                  <label style="display: block; position:absolute;  text-overflow: ellipsis; overflow:hidden; white-space: nowrap; left:0px; right:30px;"><%=filterLabel%></label>
+                  <div class="color-box" id="<%=filterLabelID%>" style="position:absolute; right:3px; top:0px; width:9px; height:9px; border:1px solid #ffffff; background-color:blue; vertical-align:center;"></div>
+                 </div>
+             </div>
+            <% } %>   
+          </div>
+        </div>
+      <% } %>
+    </div>
+    <div id="continuous">
+      <label class="category" style="margin-top:8px; " value="Continuous">&nbsp;Continuous Variables</label>
+      <% for (var field in continuous ) { %>
+        <input type="checkbox" name="continuous" value="<%=continuous[field]%>" style="height:14px; width:14px;" />
+        <div style="display: inline-block; opacity:0.8; left:70px; width: 88%; font-size:16px; vertical-align:top; margin-bottom:10px;">
+          <label style="display: block; left:35px; right:30px; position:absolute; text-overflow: ellipsis; overflow:hidden; white-space: nowrap;"><%= continuous[field]%></label>
+          <span style="width:16px; height:16px; float: right;">
+            <% var fieldID = 'field-' + continuous[field].replace(/[\s|0-9|\(|\)]/g, '-') %>
+            <% var buttonID = fieldID + '-button' %>
+            <% var click = '$(this).Toggle("#' + fieldID + '","#' + buttonID + '")' %>
+            <input type="button" id="<%=buttonID%>" onclick="<%=click%>" style="width:16px; height:16px; border:none; background: url('assets/images/up-chevron-button.svg'); background-size: cover;  background-repeat: no-repeat;"/>
+          </span>  
+          <div id="<%=fieldID%>" style="display:none; position:relative; width:100%">
+            <% var sortedSelectors = selectors.get(continuous[field]).sort() %>
+            <% for (var selector in sortedSelectors ) { %>
+              <div style="display: inline-block; position:relative; width:100%; vertical-align:top; margin-top:5px;">
+                <% var selectorID = continuous[field] + '-button' %>
+                <input type="checkbox" name="<%=selectorID%>" value="<%=sortedSelectors[selector]%>" style="height:12px; width:12px;" checked></input>
+                <div style="display: inline-block; position:absolute; left:20px; right:0px; vertical-align:top; font-size:14px; opacity:0.7">
+                  <% var selectorLabel = sortedSelectors[selector].trim().length == 0 ? '[No Value]' :  sortedSelectors[selector] %>
+                  <label style="tdisplay: block; position:absolute;  text-overflow: ellipsis; overflow:hidden; white-space: nowrap; left:0px; right:30px;"><%=selectorLabel%></label>
+                </div>
+              </div>
+            <% } %>   
+
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  div.main(style="width: 100%; height:100%; overflow:hidden;")
+    div(style="position: absolute; top:0px; bottom:0px; left:0px; right:0px; background: url('assets/images/desktop-orange-plain-background-wallpaper.jpg'); background-size: cover;  background-repeat: no-repeat;")
+      div(style="position: absolute; top:20px; height:66px; left:30px; right:30px; background-color:black; color:white; border:solid; opacity:0.7;")
+    div(style="position: absolute; top:36px; left: 50px;")
+      img(src="assets/images/graph.svg" style="height:36px; width:36px;")
+    div(style="position: absolute; top:12px; left: 105px; color:white; font-size:28px;")
+      p Multi-Dimensional Data Explorer
+   
+    div#drawButton(style="position: absolute; top:32px; right:130px; border: solid; color: grey; padding:10px; opacity:0.5")
+      a#draw(href="" style="color: grey; font-size: 18px; font-weight: bold; text-decoration: none; ") Draw
+
+    div#loadButton(style="position: absolute; top:32px; right:50px; border: solid; color: white; padding:10px;")
+      a#load(href="" style="color: white; font-size: 18px; font-weight: bold; text-decoration: none; ") Load
+
+    div#schema(style="position: absolute; top:100px; left:30px; width:255px; bottom:20px; background-color:black; border: solid; opacity:0.7; color: white; padding:10px; overflow:auto; ")  
+    div#graphs(style="position: absolute; top:100px; left:320px; right:30px; bottom:20px; background-color:black; border: solid; opacity:0.7; color: white; padding:10px;") 
+      div#parallelCoordinatesArea(style="position: fixed; top:120px; bottom:40px; left:340px; right: 50px; overflow:auto; border:solid 2px #ffffff; color:white; background-color:grey; opacity:1.0;") 
+      div#scatterPlotArea(style="position: fixed; top:120px; bottom:40px; left:340px; right: 50px; overflow:auto; border:solid 2px #ffffff; color:white; background-color:grey; opacity:1.0; display:none; padding:20px;") 
+      div#menu(style="position: fixed; bottom:29px; left:340px; right: 50px; height:12px; overflow:hide; opacity:1.0;")
+        div#items(style="display: block; width:40px; height:10px; overflow:hide; margin-left:auto; margin-right:auto;")
+          a#parallelCoordinates(href="", style="height:14px; width:14px; margin-right:4px;")
+            img(src="assets/images/dot-selected.svg" style="height:10px; width:10px;")
+          a#scatterGraphs(href="", style="height:14px; width:14px; margin-left:4px;")
+            img(src="assets/images/dot-unselected.svg" style="height:10px; width:10px;")
+
+    include assets/views/upload.pug
+
+  script(src="node_modules/ejs/ejs.min.js")
+  script(src="node_modules/d3/dist/d3.min.js")
+  script(src="node_modules/jquery/dist/jquery.min.js")
+  script(src="assets/javascripts/responder.js")
