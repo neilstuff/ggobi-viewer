@@ -1,4 +1,4 @@
-# GGOBI View
+# GGOBI Viewer
 
 **A clone of the 'R' based GGOBI Utility**
 
