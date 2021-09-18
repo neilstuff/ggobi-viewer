@@ -1,49 +1,47 @@
 {
-  "name": "electron-ggobi",
-  "version": "1.0.0",
-  "description": "Electron High Dimensional Plot",
-  "main": "main.js",
-  "scripts": {
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder --publish never",
-    "start": "electron ."
-  },
-  "build": {
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
+    "name": "electron-ggobi",
+    "version": "1.0.0",
+    "description": "Electron High Dimensional Plot",
+    "main": "main.js",
+    "scripts": {
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder --publish never",
+        "start": "electron ."
+    },
+    "build": {
+        "win": {
+            "target": [{
+                "target": "nsis",
+                "arch": [
+                    "x64",
+                    "ia32"
+                ]
+            }]
         }
-      ]
+    },
+    "repository": "https://github.com/electron/electron-ggobi",
+    "keywords": [
+        "Electron",
+        "d3"
+    ],
+    "author": "thesourorange",
+    "license": "CC0-1.0",
+    "devDependencies": {
+        "electron": "^14.0.1",
+        "electron-builder": "^22.11.7",
+        "node": "^16.9.1"
+    },
+    "dependencies": {
+        "async": "^1.4.2",
+        "bluebird": "^3.5.0",
+        "d3": "^7.0.1",
+        "pug": "^3.0.2",
+        "ejs": "^3.0.2",
+        "file-url": "~2.0.2",
+        "form-data": "^2.3.2",
+        "jquery": "^3.6.0",
+        "path": "~0.12.7",
+        "mime": "^2.4.4",
+        "request": "^2.88.0"
     }
-  },
-  "repository": "https://github.com/electron/electron-ggobi",
-  "keywords": [
-    "Electron",
-    "d3"
-  ],
-  "author": "thesourorange",
-  "license": "CC0-1.0",
-  "devDependencies": {
-    "electron": "^8.2.3",
-    "electron-builder": "^22.5.1"
-  },
-  "dependencies": {
-    "async": "^1.4.2",
-    "bluebird": "^3.5.0",
-    "d3": "^5.16.0",
-    "electron-disable-file-drop": "^1.0.2",
-    "pug": "^2.0.4",
-    "ejs": "^3.0.2",
-    "file-url": "~2.0.2",
-    "form-data": "^2.3.2",
-    "jquery": "^3.5.0",
-    "path": "~0.12.7",
-    "mime": "^2.4.4",
-    "request": "^2.88.0"
-  }
 }
