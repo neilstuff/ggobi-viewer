@@ -10,13 +10,15 @@
     },
     "build": {
         "win": {
-            "target": [{
-                "target": "nsis",
-                "arch": [
-                    "x64",
-                    "ia32"
-                ]
-            }]
+            "target": [
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                }
+            ]
         }
     },
     "repository": "https://github.com/electron/electron-ggobi",
