@@ -99,9 +99,9 @@ $.fn.Plot = (category, filters, filteredData, cellWidth, cellHeight, callback) =
             });
 
             callback(`#sp-${x}-${y}`, rows, range, {
-                x: filters[x],
-                y: filters[y]
-            },
+                    x: filters[x],
+                    y: filters[y]
+                },
 
                 cellWidth, cellHeight);
 
@@ -141,7 +141,7 @@ $.fn.PlotParalleCoordinates = (category, filters, filteredData) => {
 
         }
 
-        text.each(function () {
+        text.each(function() {
             var text = d3.select(this);
             var textWidth = getTextWidth(text.text())
 
@@ -177,7 +177,7 @@ $.fn.PlotParalleCoordinates = (category, filters, filteredData) => {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    var dimensions = d3.keys(filteredData[0]).filter((key) => { return filters.includes(key) });
+    var dimensions = Object.keys(filteredData[0]).filter((key) => { return filters.includes(key) });
 
     // For each dimension, I build a linear scale. I store all in the 'y' object
     var y = {}
@@ -186,7 +186,7 @@ $.fn.PlotParalleCoordinates = (category, filters, filteredData) => {
         var name = dimensions[dimension];
 
         y[name] = d3.scaleLinear()
-            .domain(d3.extent(filteredData, function (d) { return +d[name]; }))
+            .domain(d3.extent(filteredData, function(d) { return +d[name]; }))
             .range([height, 0]);
 
     }
@@ -201,7 +201,7 @@ $.fn.PlotParalleCoordinates = (category, filters, filteredData) => {
 
     // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
     function path(d) {
-        return d3.line()(dimensions.map(function (p) { return [x(p), y[p](d[p])]; }));
+        return d3.line()(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
     }
 
     // Draw the lines
@@ -220,16 +220,16 @@ $.fn.PlotParalleCoordinates = (category, filters, filteredData) => {
         .data(dimensions).enter()
         .append("g")
         // I translate this element to its right position on the x axis
-        .attr("transform", function (d) { return "translate(" + x(d) + ")"; })
+        .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
         // And I build the axis with the call function
-        .each(function (d) {
+        .each(function(d) {
             d3.select(this).call(d3.axisLeft().scale(y[d]));
         })
         // Add axis title
         .append("text")
         .style("text-anchor", "middle")
         .attr("y", -9)
-        .html(function (d) { return d; })
+        .html(function(d) { return d; })
         .call(wrap, 'normal 10pt sans-serif',
             filters.length == 1 ? width : x(filters[1]) - x(filters[0]))
         .style("fill", "black");
@@ -277,10 +277,10 @@ $.fn.ScatterPlot = (category, filters, filteredData) => {
             .data(rows)
             .enter()
             .append("circle")
-            .attr("cx", function (row) { return x(row[axis.x]); })
-            .attr("cy", function (row) { return y(row[axis.y]); })
+            .attr("cx", function(row) { return x(row[axis.x]); })
+            .attr("cy", function(row) { return y(row[axis.y]); })
             .attr("r", 1.5)
-            .style("fill", function (row) {
+            .style("fill", function(row) {
                 return colours[category][row[category]];
             })
 
@@ -433,11 +433,11 @@ $('#uploadDialogClose').on('click', (e) => {
 
 $('#parallelCoordinates').on('click', (e) => {
 
-    $('#parallelCoordinates').children('img').map(function () {
+    $('#parallelCoordinates').children('img').map(function() {
         $(this).attr('src', 'assets/images/dot-selected.svg');
     }).get()
 
-    $('#scatterGraphs').children('img').map(function () {
+    $('#scatterGraphs').children('img').map(function() {
         $(this).attr('src', 'assets/images/dot-unselected.svg');
     }).get()
 
@@ -451,11 +451,11 @@ $('#parallelCoordinates').on('click', (e) => {
 
 $('#scatterGraphs').on('click', (e) => {
 
-    $('#parallelCoordinates').children('img').map(function () {
+    $('#parallelCoordinates').children('img').map(function() {
         $(this).attr('src', 'assets/images/dot-unselected.svg');
     }).get()
 
-    $('#scatterGraphs').children('img').map(function () {
+    $('#scatterGraphs').children('img').map(function() {
         $(this).attr('src', 'assets/images/dot-selected.svg');
     }).get()
 
@@ -466,7 +466,7 @@ $('#scatterGraphs').on('click', (e) => {
 
 });
 
-$(document).ready(() => {
+$(() => {
 
     document.addEventListener('dragover', event => event.preventDefault());
     document.addEventListener('drop', event => event.preventDefault());
@@ -498,13 +498,13 @@ $(document).ready(() => {
     var uploadBtn = $('#uploadbtn');
     var defaultUploadBtn = $('#upload');
 
-    uploadBtn.on('click', function (e) {
+    uploadBtn.on('click', function(e) {
         e.stopPropagation();
         e.preventDefault();
         defaultUploadBtn.click();
     });
 
-    defaultUploadBtn.on('change', function () {
+    defaultUploadBtn.on('change', function() {
         var files = $(this)[0].files;
 
         $('#uploadDialog').css('display', 'none');
@@ -526,18 +526,18 @@ $(document).ready(() => {
                 var t = v * (1 - (1 - f) * s);
                 var rgb =
                     base == 0 ? [v, t, p] :
-                        base == 1 ? [q, v, p] :
-                            base == 2 ? [p, v, t] :
-                                base == 3 ? [p, q, v] :
-                                    base == 4 ? [t, p, v] : [v, p, q]
+                    base == 1 ? [q, v, p] :
+                    base == 2 ? [p, v, t] :
+                    base == 3 ? [p, q, v] :
+                    base == 4 ? [t, p, v] : [v, p, q]
                 return `rgb(${Math.round(rgb[0]*256)}, ${Math.round(rgb[1]*256)}, ${Math.round(rgb[2]*256)})`;
-    
+
             }
-    
+
             h += 0.618033988749895;
             h %= 1
             return {
-                h:h,
+                h: h,
                 colour: hsvTorgb(h, 0.5, 0.95)
             }
 
@@ -562,7 +562,9 @@ $(document).ready(() => {
             var fileURL = URL.createObjectURL(file);
 
             d3.csv(fileURL).then((rows) => {
-                var headers = d3.keys(rows[0]);
+                console.log(rows[0]);
+
+                var headers = Object.keys(rows[0]);
                 data = rows;
 
                 rows.forEach((row) => {
@@ -624,7 +626,7 @@ $(document).ready(() => {
 
                     values.forEach((value) => {
                         var colourResult = getColour(h);
- 
+
                         colours[key][value] = colourResult.colour;
 
                         h = colourResult.h;
@@ -652,9 +654,10 @@ $(document).ready(() => {
                         $('#drawButton').css('opacity', '0.7');
 
                         $('#drawButton').hover(
-                            function () {
+                            function() {
                                 $(this).css('opacity', '1.0');
-                            }, function () {
+                            },
+                            function() {
                                 $(this).css('opacity', '0.7');
                             }
                         );
@@ -664,9 +667,10 @@ $(document).ready(() => {
                         $('#drawButton').css('opacity', '0.5');
 
                         $('#drawButton').hover(
-                            function () {
+                            function() {
                                 $(this).css('opacity', '0.5');
-                            }, function () {
+                            },
+                            function() {
                                 $(this).css('opacity', '0.5');
                             }
                         );
