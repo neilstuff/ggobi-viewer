@@ -26,11 +26,7 @@ function createWindow() {
     }
 
     mainWindow.setMenu(null);
-    mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.pug'),
-        protocol: 'pug:',
-        slashes: true
-    }))
+    mainWindow.loadURL(`pug:///${path.join(__dirname, 'index.pug')}`);
 
     mainWindow.on('closed', () => {
         mainWindow = null
@@ -41,7 +37,7 @@ function createWindow() {
 app.on('ready', function () {
 
   protocol.registerBufferProtocol('pug', function (request, callback) {
-        let parsedUrl = new (require('url').URL)(request.url);
+        let parsedUrl = new URL(request.url);
         let url = path.normalize(path.toNamespacedPath(parsedUrl.pathname).startsWith("\\\\?\\") ?
                                 parsedUrl.pathname.replace('/', '') :  parsedUrl.pathname);
              
