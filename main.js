@@ -48,9 +48,8 @@ function createWindow () {
 app.on('ready', function () {
 
   protocol.registerBufferProtocol('pug', function (request, callback) {
-
-      let parsedUrl = require('url').parse(request.url);
-      var url = path.normalize(request.url.replace('pug:///', ''));
+      let parsedUrl = new (require('url').URL)(request.url);
+      let url = path.normalize(parsedUrl.pathname.replace('/', ''));
       let ext = path.extname(url);
 
       switch (ext) {
